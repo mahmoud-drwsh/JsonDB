@@ -5,6 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.IO;
+using Inflector;
 
 namespace JsonDatabase
 {
