@@ -20,9 +20,9 @@ var db = new Database(Environment.GetFolderPath(Environment.SpecialFolder.Deskto
 
 //just start inserting anything and it will create a .json file for that specific type in the directory given above
 //notice that a type is required
-db.Insert<File>(new File() { Name = "NewFile" });
+db.InsertOne<File>(new File() { Name = "NewFile" });
 //you can also insert a list of Files
-db.Insert<File>(new List<File>() { new File() { Name = "File1" }, new File() { Name = "File2" } });
+db.InsertMany<File>(new List<File>() { new File() { Name = "File1" }, new File() { Name = "File2" } });
 
 //when you call GetCollection<T>(); it will return a List<T> filled with what was inserted of the type given
 var FilesCollection = db.GetCollection<File>();
