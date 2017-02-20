@@ -1,4 +1,4 @@
-# JsonDatabase
+# JsonDB
 
 ## consider the Following 
 
@@ -11,7 +11,7 @@ public string Name { get; set; }
 ## Examples
 
 ```csharp
-using JsonDatabse;
+using JsonDB;
 ...
 
 //provide a directory for the database to save .json files to
