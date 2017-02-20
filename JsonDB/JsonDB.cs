@@ -8,7 +8,7 @@ using System.IO;
 using Inflector;
 
 namespace JsonDB {
-	public class Database {
+	public class Database : IDisposable {
 
 		#region Properties
 
@@ -78,6 +78,10 @@ namespace JsonDB {
 
 		private string GetPath<T>() {
 			return Path.ChangeExtension(Path.Combine(DatabaseDirectory, typeof(T).Name.Pluralize().Capitalize()), JsonExtension);
+		}
+
+		void IDisposable.Dispose() {
+
 		}
 
 		#endregion
