@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Inflector;
 
-namespace JsonDatabase {
+namespace JsonDB {
 	public class Database {
 		private const string JsonExtension = "json";
 
