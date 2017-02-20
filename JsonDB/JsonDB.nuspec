@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>JsonDB.Database</id>
+    <version>1.2.0</version>
+    <title>$title$</title>
+    <authors>Mahmoud</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/imahmwd14/JsonDB</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Json Database</description>
+    <copyright>Copyright 2017</copyright>
+    <tags>json jsondb database nosql c#</tags>
+  </metadata>
+</package>
