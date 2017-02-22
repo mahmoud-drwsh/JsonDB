@@ -10,7 +10,7 @@ namespace JsonDB {
 		}
 
 		public void Save() {
-			Database.SaveToDisk(this);
+			Database.SaveCollectionToDisk(this);
 		}
 	}
 }

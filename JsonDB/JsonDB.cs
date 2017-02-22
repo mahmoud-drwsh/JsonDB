@@ -23,7 +23,7 @@ namespace JsonDB {
 		#region Constructors
 
 		public Database() {
-			DatabaseDirectory = Path.Combine(Environment.CurrentDirectory, "Database");
+			DatabaseDirectory = Path.Combine(Environment.CurrentDirectory, "JsonDB");
 			Serializer = new JsonSerializer();
 		}
 
@@ -45,7 +45,7 @@ namespace JsonDB {
 			try {
 				using(var streamWriter = new StreamReader(GetPath<T>()))
 				using(var jsonTextReader = new JsonTextReader(streamWriter)) {
-					Collection.AddRange(Serializer.Deserialize<List<T>>(jsonTextReader));
+					Collection.AddRange(Serializer.Deserialize<JsonList<T>>(jsonTextReader));
 				}
 			} catch(FileNotFoundException ex) {
 				File.Create(ex.FileName).Dispose();
@@ -60,7 +60,7 @@ namespace JsonDB {
 			return Collection;
 		}
 
-		internal void SaveToDisk<T>(IEnumerable<T> List) {
+		internal void SaveCollectionToDisk<T>(IEnumerable<T> List) {
 			try {
 				using(var streamWriter = new StreamWriter(GetPath<T>()))
 				using(var jsonTextWriter = new JsonTextWriter(streamWriter)) {
@@ -68,7 +68,7 @@ namespace JsonDB {
 				}
 			} catch(DirectoryNotFoundException) {
 				Directory.CreateDirectory(Path.GetDirectoryName(GetPath<T>()));
-				SaveToDisk(List);
+				SaveCollectionToDisk(List);
 			} catch(Exception) {
 
 			}
