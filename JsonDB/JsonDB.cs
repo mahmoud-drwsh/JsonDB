@@ -43,12 +43,12 @@ namespace JsonDB {
 			var Collection = new JsonList<T>(this);
 
 			try {
-				using(var streamWriter = new StreamReader(GetPath<T>()))
-				using(var jsonTextReader = new JsonTextReader(streamWriter)) {
+				using(var streamReader = new StreamReader(GetPath<T>()))
+				using(var jsonTextReader = new JsonTextReader(streamReader)) {
 					Collection.AddRange(Serializer.Deserialize<JsonList<T>>(jsonTextReader));
 				}
-			} catch(FileNotFoundException ex) {
-				File.Create(ex.FileName).Dispose();
+			} catch(FileNotFoundException) {
+				File.Create(GetPath<T>()).Dispose();
 				GetCollection<T>();
 			} catch(DirectoryNotFoundException) {
 				Directory.CreateDirectory(Path.GetDirectoryName(GetPath<T>()));
