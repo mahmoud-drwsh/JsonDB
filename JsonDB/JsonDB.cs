@@ -41,36 +41,29 @@ namespace JsonDB {
 
 		public JsonList<T> GetCollection<T>() {
 			var Collection = new JsonList<T>(this);
+			var path = GetPath<T>();
 
-			try {
-				using(var streamReader = new StreamReader(GetPath<T>()))
-				using(var jsonTextReader = new JsonTextReader(streamReader)) {
-					Collection.AddRange(Serializer.Deserialize<JsonList<T>>(jsonTextReader));
+			EnsureCollectionFileExists(path);
+
+			using(var streamReader = new StreamReader(path))
+			using(var jsonTextReader = new JsonTextReader(streamReader)) {
+				var items = Serializer.Deserialize<JsonList<T>>(jsonTextReader);
+
+				if(items != null) {
+					Collection.AddRange(items);
 				}
-			} catch(FileNotFoundException) {
-				File.Create(GetPath<T>()).Dispose();
-				GetCollection<T>();
-			} catch(DirectoryNotFoundException) {
-				Directory.CreateDirectory(Path.GetDirectoryName(GetPath<T>()));
-				GetCollection<T>();
-			} catch(Exception) {
-
 			}
 
 			return Collection;
 		}
 
 		internal void SaveCollectionToDisk<T>(IEnumerable<T> List) {
-			try {
-				using(var streamWriter = new StreamWriter(GetPath<T>()))
-				using(var jsonTextWriter = new JsonTextWriter(streamWriter)) {
-					Serializer.Serialize(jsonTextWriter, List);
-				}
-			} catch(DirectoryNotFoundException) {
-				Directory.CreateDirectory(Path.GetDirectoryName(GetPath<T>()));
-				SaveCollectionToDisk(List);
-			} catch(Exception) {
+			var path = GetPath<T>();
+			EnsureCollectionDirectoryExists(path);
 
+			using(var streamWriter = new StreamWriter(path))
+			using(var jsonTextWriter = new JsonTextWriter(streamWriter)) {
+				Serializer.Serialize(jsonTextWriter, List);
 			}
 		}
 
@@ -78,6 +71,20 @@ namespace JsonDB {
 
 		private string GetPath<T>() {
 			return Path.ChangeExtension(Path.Combine(DatabaseDirectory, typeof(T).Name.Pluralize().Capitalize()), JsonExtension);
+		}
+
+		private static void EnsureCollectionDirectoryExists(string path) {
+			var directory = Path.GetDirectoryName(path);
+
+			if(!string.IsNullOrEmpty(directory)) {
+				Directory.CreateDirectory(directory);
+			}
+		}
+
+		private static void EnsureCollectionFileExists(string path) {
+			EnsureCollectionDirectoryExists(path);
+
+			File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite).Dispose();
 		}
 
 		void IDisposable.Dispose() {
